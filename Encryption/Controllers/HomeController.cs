@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Encryption.Controllers
 {
-    //[Authorize]
+    //[Authorize(Roles = "Developers")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
