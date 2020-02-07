@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="text-center">
+    <br />
+    <b>Encrypt String: </b>
+    <input id="txtEncrypt" type="password" style="width: 87%;display:inline;" />
+    <input id="txtEncryptShow" type="text" style="width: 87%;display:none;" />
+    &nbsp;&nbsp;
+    <button onclick="showText()">Show Text</button>
+    <br /><br />
+    <button onclick="encryptMe();">Encrypt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button onclick="copyIt('1');">Copy to clipboard</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button onclick="clearIt('1');">Clear</button>
+    <br /><br /><br /><br />
+    <b>Decrypt String: </b><input id="txtDecrypt" type="text" ng-model="decryptMe" style="width: 90%;" />
+    <br /><br />
+    <button onclick="decryptMe();">Decrypt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button onclick="copyIt('2');">Copy to clipboard</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button onclick="clearIt('2');">Clear</button>
+    <br />
+    <br />
+    <button onclick="clearIt('0');">Clear Both</button>
+</div>
+<script type="text/javascript">
+    var shwTxtOn = false;
+    function encryptMe() {
+        var phrs = document.getElementById("txtEncrypt").value;
+        $.ajax({
+            url: "/Home/Encrypt",
+            type: "GET",
+            dataType: "text",
+            data: { phrase: phrs },
+            traditional: true,
+            async: true,
+            success: function (data) {
+                if (data.indexOf("ERROR") === -1) {
+                    document.getElementById("txtDecrypt").value = data;
+                } else {
+                    alert(data);
+                }
+            },
+            error: function (msg) {
+                alert(JSON.stringify(msg));
+            }
+        });
+    };
+
+    function decryptMe() {
+        var phrs = document.getElementById("txtDecrypt").value;
+        $.ajax({
+            url: "/Home/Decrypt",
+            type: "GET",
+            dataType: "text",
+            data: { phrase: phrs },
+            traditional: true,
+            async: true,
+            success: function (data) {
+                if (data.indexOf("ERROR") === -1) {
+                    document.getElementById("txtEncrypt").value = data;
+                } else {
+                    alert(data);
+                }
+            },
+            error: function (msg) {
+                alert(JSON.stringify(msg));
+            }
+        });
+    };
+
+    function clearIt(itm) {
+        if (itm == '1' || itm == '0') {
+            document.getElementById("txtEncrypt").value = "";
+        }
+        if (itm == '2' || itm == '0') {
+            document.getElementById("txtDecrypt").value = "";
+        }
+    };
+
+    function showText() {
+        var notShw = document.getElementById("txtEncrypt");
+        var shw = document.getElementById("txtEncryptShow");
+        if (shwTxtOn) {
+            shwTxtOn = false;
+            notShw.style.display = "inline";
+            shw.style.display = "none";
+            notShw.value = shw.value;
+        } else {
+            shwTxtOn = true;
+            notShw.style.display = "none";
+            shw.style.display = "inline";
+            shw.value = notShw.value;
+        }
+    };
+
+    function copyIt(itm) {
+        var phrs;
+        if (itm == '1') {
+            phrs = document.getElementById("txtEncrypt").value;
+        } else {
+            phrs = document.getElementById("txtDecrypt").value;
+        }
+        fallbackCopyTextToClipboard(phrs);
+    };
+
+    function fallbackCopyTextToClipboard(text) {
+      var textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position="fixed";  //avoid scrolling to bottom
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Fallback: Copying text command was ' + msg);
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+      document.body.removeChild(textArea);
+    };
+</script>
