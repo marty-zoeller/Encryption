@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Encryption.Models;
 using Zoeller;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Encryption.Controllers
 {

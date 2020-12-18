@@ -1,26 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<div class="text-center">
+<div style="width:100%;text-align:left;">
     <br />
-    <b>Encrypt String: </b>
-    <input id="txtEncrypt" type="password" style="width: 87%;display:inline;" />
-    <input id="txtEncryptShow" type="text" style="width: 87%;display:none;" />
+    <div style="display:inline-block;width:10%;font-weight:bold;text-align:left;">Encrypt String: </div>
+    <input id="txtEncrypt" type="password" style="width:80%;display:inline;" />
+    <input id="txtEncryptShow" type="text" style="width:80%;display:none;" />
     &nbsp;&nbsp;
-    <button onclick="showText()">Show Text</button>
+    <button style="display:inline;" onclick="showText()">Show Text</button>
     <br /><br />
-    <button onclick="encryptMe();">Encrypt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button onclick="copyIt('1');">Copy to clipboard</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button onclick="clearIt('1');">Clear</button>
+    <div style="width:100%;text-align:center;">
+        <button style="clear:both;" onclick="encryptMe();">Encrypt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="copyIt('1');">Copy to clipboard</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="clearIt('1');">Clear</button>
+    </div>
     <br /><br /><br /><br />
-    <b>Decrypt String: </b><input id="txtDecrypt" type="text" ng-model="decryptMe" style="width: 90%;" />
+    <div style="display:inline-block;width:10%;font-weight:bold;text-align:left;">Decrypt String: </div>
+    <input id="txtDecrypt" type="text" ng-model="decryptMe" style="width:80%;display:inline;text-align:left;" />
     <br /><br />
-    <button onclick="decryptMe();">Decrypt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button onclick="copyIt('2');">Copy to clipboard</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <button onclick="clearIt('2');">Clear</button>
+    <div style="width:100%;text-align:center;">
+        <button onclick="decryptMe();">Decrypt</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="copyIt('2');">Copy to clipboard</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="clearIt('2');">Clear</button>
+    </div>
     <br />
-    <br />
-    <button onclick="clearIt('0');">Clear Both</button>
+    <center>
+        <button onclick="clearIt('0');">Clear Both</button>
+    </center>
 </div>
 <script type="text/javascript">
     var shwTxtOn = false;
@@ -70,6 +76,7 @@
 
     function clearIt(itm) {
         if (itm == '1' || itm == '0') {
+            document.getElementById("txtEncryptShow").value = "";
             document.getElementById("txtEncrypt").value = "";
         }
         if (itm == '2' || itm == '0') {
@@ -104,20 +111,19 @@
     };
 
     function fallbackCopyTextToClipboard(text) {
-      var textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position="fixed";  //avoid scrolling to bottom
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-
-      try {
-        var successful = document.execCommand('copy');
-        var msg = successful ? 'successful' : 'unsuccessful';
-        console.log('Fallback: Copying text command was ' + msg);
-      } catch (err) {
-        console.error('Fallback: Oops, unable to copy', err);
-      }
-      document.body.removeChild(textArea);
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";  //avoid scrolling to bottom
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            var successful = document.execCommand("copy");
+            var msg = successful ? "successful" : "unsuccessful";
+            console.log("Fallback: Copying text command was " + msg);
+        } catch (err) {
+            console.error("Fallback: Oops, unable to copy", err);
+        }
+        document.body.removeChild(textArea);
     };
 </script>
