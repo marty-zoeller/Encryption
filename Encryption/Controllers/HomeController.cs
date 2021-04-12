@@ -22,7 +22,6 @@ namespace Encryption.Controllers
             return View();
         }
 
-
         [HttpGet]
         public string Encrypt(string phrase)
         {
